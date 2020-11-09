@@ -1,14 +1,25 @@
+// player factory function
+const Player = (name, sym) => {
+
+    const getName = () => name;
+    const getSymbol = () => sym;
+
+    // var and func that track number of wins
+
+    return { getSymbol, getName };
+};
+
 // gameBoard module
 const Game = (() => {
 
-    let turn = 0;
+    let turn;
+
+    //let winner = "";
 
     let gameBoard = ["","","","","","","","",""];
-    //let curGameBoard = [];
-
-    const setGameBoard = (gb) => {
-        curGameBoard = [...gb];
-    }
+    
+    const playerOne = Player('Alex', 'X');
+    const playerTwo = Player('Jim', 'O');
 
     const getGameBoard = () => {
         return gameBoard;
@@ -17,30 +28,71 @@ const Game = (() => {
     const updateGameBoard = (i) => {
         if (gameBoard[i] === ""){
             if (turn % 2 === 0) {
-                gameBoard[i] = 'X';
+                gameBoard[i] = playerOne.getSymbol();
+                if(checkWin(playerOne.getSymbol())) {
+                    setWinner(playerOne.getName());
+                }
             }
             else {
-                gameBoard[i] = 'O';
+                gameBoard[i] = playerTwo.getSymbol();
+                if(checkWin(playerTwo.getSymbol())) {
+                    setWinner(playerTwo.getName());
+                }
+                
             }
             turn++;
-            checkWin();
         }  
     }
-    // find an elegant solution to check for a winner
-    const checkWin = () => {
+    const checkWin = (sym) => {
         let gb = gameBoard;
-        if (gb[0] === 'X' && gb[1] === 'X' && gb[2] === 'X') {
-            return 'X';
+        //horizontal checks
+        if (gb[0] === sym && gb[1] === sym && gb[2] === sym) {
+            return sym;
         }
-    }
-    
+        else if (gb[3] === sym && gb[4] === sym && gb[5] === sym) {
+            return true;
+        }
+        else if (gb[6] === sym && gb[7] === sym && gb[8] === sym) {
+            return true;
+        }
 
+        //vertical checks
+        else if (gb[0] === sym && gb[3] === sym && gb[6] === sym) {
+            return true;
+        }
+        else if (gb[1] === sym && gb[4] === sym && gb[7] === sym) {
+            return true;
+        }
+        else if (gb[2] === sym && gb[5] === sym && gb[8] === sym) {
+            return true;
+        }
+
+        //diagonal checks
+        else if (gb[0] === sym && gb[4] === sym && gb[8] === sym) {
+            return true;
+        }
+        else if (gb[2] === sym && gb[4] === sym && gb[6] === sym) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }   
+    
+    const setWinner = winner => {
+        this.winner = winner;
+    }
+
+    const getWinner = () => {
+        return this.winner;
+    }
     const newGame = () => {
         gameBoard = ["","","","","","","","",""];
         turn = 0;
+        this.winner = null;
     }
 
-    return { updateGameBoard, getGameBoard, newGame }
+    return { updateGameBoard, getGameBoard, newGame, getWinner }
     
 })();
 
@@ -66,23 +118,20 @@ const DisplayController = (() => {
         for (let i = 0; i < gb.length; i++) {
             document.getElementById(`${i}`).innerHTML = gb[i];
         }
+        if (Game.getWinner()) {
+            setTimeout(function() {
+                alert(`${Game.getWinner()} is the winner`)
+                Game.newGame();
+                updateDisplay();
+            }, 0)
+            
+        }
     }
     return { createGameBoardListener };
 })();
 
-// player factory function
-const Player = (player) => {
 
-    this.player = player;
-
-    const makeMove = player => {
-        
-    }
-};
 document.addEventListener('DOMContentLoaded', () => {
     DisplayController.createGameBoardListener();
+    Game.newGame();
 })
-
-
-/*const X = Player('X');
-const O = Player('O');*/
