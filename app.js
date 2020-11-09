@@ -11,8 +11,6 @@ const Player = (name, sym) => {
     const getSymbol = () => sym;
     const getWins = () => wins;
 
-    // var and func that track number of wins
-
     return { getWins, updateWins, getSymbol, getName };
 };
 const playerOne = Player(prompt('X Name'),'X');
@@ -120,8 +118,9 @@ const DisplayController = (() => {
                 })
             },
             document.getElementById('newGame').addEventListener('click', () => {
-                Game.newGame();
-                updateDisplay();
+                /*Game.newGame();
+                updateDisplay();*/
+                document.location.reload();
             }) 
         );
     }
