@@ -3,14 +3,18 @@
 }
 
 body {
-    background: grey;
+    background: #DAE2DF;
 }
 
 .board-container {
     width: 300px;
     height: 300px;
-    background-color: white;
     margin: auto;
+}
+.newGame-container {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
 }
 
 .board {
@@ -20,11 +24,12 @@ body {
     margin: auto;
     display: grid;
     border: 6px solid #D3D0CB;
+    border-radius: 2%;
     grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
 
 .box {
-    border: 6px solid #393E41;
+    border: 1px solid #A2A7A5;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -33,5 +38,7 @@ body {
 .box button {
     width: 100%;
     height: 100%;
-    background-color: #D3D0CB;
+    background-color: white;
+    font-size: large;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
