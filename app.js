@@ -15,8 +15,8 @@ const Player = (name, sym) => {
 
     return { getWins, updateWins, getSymbol, getName };
 };
-const playerOne = Player(prompt('Name'),'X');
-const playerTwo = Player(prompt('Name'), 'O');
+const playerOne = Player(prompt('X Name'),'X');
+const playerTwo = Player(prompt('O Name'), 'O');
 // gameBoard module
 const Game = (() => {
 
@@ -38,7 +38,6 @@ const Game = (() => {
                 if(checkWin(playerOne.getSymbol())) {
                     setWinner(playerOne.getName());
                     playerOne.updateWins();
-                    console.log(playerOne.getWins());
                 }
             }
             else {
@@ -48,7 +47,6 @@ const Game = (() => {
                 if(checkWin(playerTwo.getSymbol())) {
                     setWinner(playerTwo.getName());
                     playerTwo.updateWins();
-                    console.log(playerTwo.getWins());
                 }     
             }
             turn++;
@@ -97,13 +95,17 @@ const Game = (() => {
     const getWinner = () => {
         return this.winner;
     }
+    const getTurn = () => {
+        return turn;
+    }
+
     const newGame = () => {
         gameBoard = ["","","","","","","","",""];
         turn = 0;
         this.winner = null;
     }
 
-    return { updateGameBoard, getGameBoard, newGame, getWinner }
+    return { updateGameBoard, getGameBoard, newGame, getWinner, getTurn }
     
 })();
 
@@ -136,7 +138,14 @@ const DisplayController = (() => {
                 updateDisplay();
                 updatePlayer();
             }, 0)
-            
+        }
+        if(!Game.getWinner() && Game.getTurn() === 9) {
+            setTimeout(function() {
+                alert(`Draw`)
+                Game.newGame();
+                updateDisplay();
+                updatePlayer();
+            }, 0)
         }
     }
     const updatePlayer = () => {
