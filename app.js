@@ -1,14 +1,22 @@
 // player factory function
 const Player = (name, sym) => {
 
+    let wins = 0;
+
+    const updateWins = () => {
+        wins++;
+    }
+
     const getName = () => name;
     const getSymbol = () => sym;
+    const getWins = () => wins;
 
     // var and func that track number of wins
 
-    return { getSymbol, getName };
+    return { getWins, updateWins, getSymbol, getName };
 };
-
+const playerOne = Player(prompt('Name'),'X');
+const playerTwo = Player(prompt('Name'), 'O');
 // gameBoard module
 const Game = (() => {
 
@@ -18,9 +26,6 @@ const Game = (() => {
 
     let gameBoard = ["","","","","","","","",""];
     
-    const playerOne = Player('Alex', 'X');
-    const playerTwo = Player('Jim', 'O');
-
     const getGameBoard = () => {
         return gameBoard;
     }
@@ -29,16 +34,22 @@ const Game = (() => {
         if (gameBoard[i] === ""){
             if (turn % 2 === 0) {
                 gameBoard[i] = playerOne.getSymbol();
+                console.log(playerOne.getName());
                 if(checkWin(playerOne.getSymbol())) {
                     setWinner(playerOne.getName());
+                    playerOne.updateWins();
+                    console.log(playerOne.getWins());
                 }
             }
             else {
                 gameBoard[i] = playerTwo.getSymbol();
+                console.log(playerTwo.getName());
+
                 if(checkWin(playerTwo.getSymbol())) {
                     setWinner(playerTwo.getName());
-                }
-                
+                    playerTwo.updateWins();
+                    console.log(playerTwo.getWins());
+                }     
             }
             turn++;
         }  
@@ -47,7 +58,7 @@ const Game = (() => {
         let gb = gameBoard;
         //horizontal checks
         if (gb[0] === sym && gb[1] === sym && gb[2] === sym) {
-            return sym;
+            return true;
         }
         else if (gb[3] === sym && gb[4] === sym && gb[5] === sym) {
             return true;
@@ -123,15 +134,26 @@ const DisplayController = (() => {
                 alert(`${Game.getWinner()} is the winner`)
                 Game.newGame();
                 updateDisplay();
+                updatePlayer();
             }, 0)
             
         }
     }
-    return { createGameBoardListener };
+    const updatePlayer = () => {
+        const p1 = document.querySelector('#p1');
+        const p2 = document.querySelector('#p2');
+
+        p1.innerHTML = `${playerOne.getName()} Wins: ${playerOne.getWins()}`
+        p2.innerHTML = `${playerTwo.getName()} Wins: ${playerTwo.getWins()}`
+    }
+  
+
+    return { createGameBoardListener, updatePlayer };
 })();
 
 
 document.addEventListener('DOMContentLoaded', () => {
     DisplayController.createGameBoardListener();
+    DisplayController.updatePlayer();
     Game.newGame();
 })
