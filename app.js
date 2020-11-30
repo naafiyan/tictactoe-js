@@ -120,8 +120,9 @@ const DisplayController = (() => {
     const createGameBoardListener = () => {
             document.querySelectorAll('.gamebutton').forEach((e) => {
                 e.addEventListener('click', (but) => {
-                    Game.updateGameBoard(but.target.id);
-                    updateDisplay();
+                    Game.updateGameBoard(but.target.id); // find another way to do it without directly accessing updateGameBoard function
+                    updateBoardDisplay();
+                    setTimeout(function () { outcomeAlert(); }, 0.5);
                 })
             },
             document.getElementById('newGame').addEventListener('click', () => {
@@ -130,26 +131,25 @@ const DisplayController = (() => {
         );
     }
 
-    const updateDisplay = () => {
+    // separate the win alert from updateDisplaya();
+    const updateBoardDisplay = () => {
         const gb = Game.getGameBoard()
         for (let i = 0; i < gb.length; i++) {
             document.getElementById(`${i}`).innerHTML = gb[i];
         }
+    }
+
+    const outcomeAlert = () => {
         if (Game.getWinner()) {
-            setTimeout(function() {
-                alert(`${Game.getWinner()} is the winner`)
-                Game.newGame();
-                updateDisplay();
-                updatePlayer();
-            }, 0)
+            alert(`${Game.getWinner()} is the winner`);
+            Game.newGame();
+            updateBoardDisplay();
+            updatePlayer();
         }
-        if(!Game.getWinner() && Game.getTurn() === 9) {
-            setTimeout(function() {
-                alert(`Draw`)
-                Game.newGame();
-                updateDisplay();
-                updatePlayer();
-            }, 0)
+        if (!Game.getWinner() && Game.getTurn() === 9){
+            alert(`Draw`);
+            Game.newGame();
+            updateBoardDisplay();
         }
     }
     const updatePlayer = () => {
