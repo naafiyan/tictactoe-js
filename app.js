@@ -1,20 +1,27 @@
 // player factory function
 const Player = (name, sym) => {
-
+    
     let wins = 0;
 
     const updateWins = () => {
         wins++;
     }
 
-    const getName = () => name;
+    const getName = () => {
+    if(name != ''){
+        return name;
+    }    
+        else {
+            return sym;
+        }
+    };
     const getSymbol = () => sym;
     const getWins = () => wins;
 
     return { getWins, updateWins, getSymbol, getName };
 };
-const playerOne = Player(prompt('X Name'),'X');
-const playerTwo = Player(prompt('O Name'), 'O');
+
+
 // gameBoard module
 const Game = (() => {
 
@@ -31,7 +38,7 @@ const Game = (() => {
     const updateGameBoard = (i) => {
         if (gameBoard[i] === ""){
             if (turn % 2 === 0) {
-                gameBoard[i] = playerOne.getSymbol();
+                gameBoard[i] = playerOne.getName();
                 console.log(playerOne.getName());
                 if(checkWin(playerOne.getSymbol())) {
                     setWinner(playerOne.getName());
@@ -118,8 +125,6 @@ const DisplayController = (() => {
                 })
             },
             document.getElementById('newGame').addEventListener('click', () => {
-                /*Game.newGame();
-                updateDisplay();*/
                 document.location.reload();
             }) 
         );
@@ -161,6 +166,8 @@ const DisplayController = (() => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    this.playerOne = Player(prompt('X Name'),'X');
+    this.playerTwo = Player(prompt('O Name'), 'O');
     DisplayController.createGameBoardListener();
     DisplayController.updatePlayer();
     Game.newGame();

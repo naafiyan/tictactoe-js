@@ -14,13 +14,13 @@ body {
 .newGame-container {
     display: flex;
     justify-content: center;
+    padding-top: 20px;
     padding-bottom: 10px;
 }
 
 .player-container {
     display: flex;
     justify-content: center;
-    padding: 5px;
 }
 
 .pname {
